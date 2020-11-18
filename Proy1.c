@@ -159,7 +159,8 @@ int main(int argc, char *argv[])
 	sprintf (filename,"%s",argv[1]);
 	printf(argv[1]);
 	Preprosesar(filename,"TSource.in");
-	stdin = freopen("TSource.in", "r", stdin); 
+	system("gcc -E -C Proy1.c > andrei.in");
+	stdin = freopen("andrei.in", "r", stdin); 
 //preprocesador
 
 	
