@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <dirent.h>
-#include "preprocessor.h"
+
 
 void newEntry(char* simb,char* val,char* args,int arg){
     memset(SimbolTable[posLast][0], '\0', linesize);
