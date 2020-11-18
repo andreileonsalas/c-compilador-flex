@@ -20,6 +20,6 @@ int insertTable(int pos,char *in,char argTable[][2][linesize]);
 int exchange(char*in,char*out);
 int verificarArgs(char*s,char *out,char *args);
 int Preproses (FILE *In,FILE* Out,char *filein);
-int Preprosesar(char* input,char* output);
+extern int Preprosesar(char* input,char* output);
 
 #endif // PRECOMPILER_H_INCLUDED
