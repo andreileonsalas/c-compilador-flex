@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <libgen.h>
 #include "Proy1.h"
 #include "preprocessor.h"
 
@@ -176,8 +177,15 @@ int Preprosesar(char* input,char* output){
 }
 
 
-int main(void)
+int main(int argc, char *argv[])
 {
+//preprocesador
+	char*filename=(char*)malloc(256 * sizeof(char));
+	sprintf (filename,"%s",argv[1]);
+	Preprosesar(file,"TSource.in");
+	stdin = freopen("TSource.in", "r", stdin); 
+//preprocesador
+
 	
 	histogram = malloc (HSTGRM_SIZE * sizeof(*histogram));
 	current_Hist_s = HSTGRM_SIZE;
@@ -186,7 +194,7 @@ int main(void)
 		printf(" n:%d ",histogram[0].token_count[i]);
 	#endif
 	file = fopen(latexFile,"w");
-	Preprosesar(file,"TSource.in");
+
 	Row rowToken;
 	rowToken = getToken();
 	writeLatexFileStart(file);
