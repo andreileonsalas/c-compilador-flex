@@ -147,6 +147,34 @@ void writeTokensToDatafile(void)
 	fclose(file);
 }
 
+int Preprosesar(char* input,char* output){
+    posLast=0;
+    strcpy(def,"define");
+    strcpy(inc,"include");
+    FILE* Input=fopen(input,"r");
+    if (Input==NULL){
+	printf("Archivo de entrada no encontrado\n");
+	return 0;
+    }
+    FILE* Output=fopen(output,"w");
+    if (Output==NULL){
+	printf("Archivo de salida creado incorrectamente\n");
+	return 0;
+    }
+    int res;
+    fclose(Output);
+    Output=fopen(output,"a");
+    if (Output==NULL){
+	printf("Archivo de salida creado incorrectamente\n");
+	return 0;
+    }
+    res=Preproses(Input,Output,input);
+    fclose(Output);
+    fclose(Input);
+    return res;
+}
+
+
 int main(void)
 {
 	
@@ -180,29 +208,3 @@ int main(void)
 	return 0;
 }
 
-int Preprosesar(char* input,char* output){
-    posLast=0;
-    strcpy(def,"define");
-    strcpy(inc,"include");
-    FILE* Input=fopen(input,"r");
-    if (Input==NULL){
-	printf("Archivo de entrada no encontrado\n");
-	return 0;
-    }
-    FILE* Output=fopen(output,"w");
-    if (Output==NULL){
-	printf("Archivo de salida creado incorrectamente\n");
-	return 0;
-    }
-    int res;
-    fclose(Output);
-    Output=fopen(output,"a");
-    if (Output==NULL){
-	printf("Archivo de salida creado incorrectamente\n");
-	return 0;
-    }
-    res=Preproses(Input,Output,input);
-    fclose(Output);
-    fclose(Input);
-    return res;
-}
