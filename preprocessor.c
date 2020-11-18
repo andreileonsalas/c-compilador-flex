@@ -417,7 +417,7 @@ int Preprosesar(char* input,char* output){
     strcpy(inc,"include");
     printf("\n\n%s\n\n",input);
     FILE* Input=fopen(input,"r");
-
+    printf("\n\n%s\n\n",Input);
     if (Input==NULL){
 	    printf("Archivo de entrada no encontrado\n");
         printf("El archivo debe tener extensión .c\n");
