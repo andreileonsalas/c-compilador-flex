@@ -160,7 +160,10 @@ int main(int argc, char *argv[])
 	printf(argv[1]);
 	//Preprosesar(filename,"TSource.in");
 	//gcc -E -C %s > andrei.in",filename
-	char*temp="gcc -E -C +|" + filename + "> andrei.in";
+	char*temp=(char*)malloc(256 * sizeof(char));
+	strcpy(temp,"gcc -E -C");
+	strcat(temp,filename);
+	strcat(temp,"> andrei.in");
 	system(temp);
 	stdin = freopen("andrei.in", "r", stdin); 
 //preprocesador
