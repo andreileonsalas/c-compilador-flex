@@ -328,7 +328,7 @@ int Preproses (FILE *In,FILE* Out,char *filein){
     while(fgets(act, linesize, Aux)!= NULL) {
         tipo=tipoLinea(act,arg1,arg2);
         if(tipo==-1)
-            printf("Advertencia: linea <%s> en archivo %s, linea no ejecutada.\n",act,filein);
+            //printf("Advertencia: linea <%s> en archivo %s, linea no ejecutada.\n",act,filein);
         else if(tipo==1){
 			if(arg2[0]!='\0'){
 				cambio=1;
