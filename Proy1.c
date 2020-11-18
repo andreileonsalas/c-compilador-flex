@@ -161,9 +161,9 @@ int main(int argc, char *argv[])
 	//Preprosesar(filename,"TSource.in");
 	//gcc -E -C %s > andrei.in",filename
 	char*temp=(char*)malloc(256 * sizeof(char));
-	strcpy(temp,"gcc -E -C");
+	strcpy(temp,"gcc -E -C ");
 	strcat(temp,filename);
-	strcat(temp,"> andrei.in");
+	strcat(temp," > andrei.in");
 	system(temp);
 	stdin = freopen("andrei.in", "r", stdin); 
 //preprocesador
