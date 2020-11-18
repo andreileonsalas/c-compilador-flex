@@ -415,7 +415,7 @@ int Preprosesar(char* input,char* output){
     posLast=0;
     strcpy(def,"define");
     strcpy(inc,"include");
-
+    printf("\n\n%s\n\n",input);
     FILE* Input=fopen(input,"r");
 
     if (Input==NULL){
