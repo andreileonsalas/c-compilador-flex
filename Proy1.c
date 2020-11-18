@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <libgen.h>
 #include "Proy1.h"
-#include "preprocessor.h"
+
 
 #define NEWFRM 250
 #define HISTOGRAM_LINES 50
