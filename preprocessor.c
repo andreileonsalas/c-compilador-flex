@@ -412,17 +412,6 @@ int Preproses (FILE *In,FILE* Out,char *filein){
 }
 
 int Preprosesar(char* input,char* output){
-    char * versionGcc="7";						//para buscar vercion:gcc -v -E - < /dev/null
-    memset(PathSearch[0], '\0', linesize);
-    sprintf(PathSearch[0],"/usr/lib/gcc/x86_64-linux-gnu/%s/include/%s",versionGcc,"%s");
-    memset(PathSearch[1], '\0', linesize);
-    strcpy(PathSearch[1],"/usr/local/include/%s");
-    memset(PathSearch[2], '\0', linesize);
-    sprintf(PathSearch[2],"/usr/lib/gcc/x86_64-linux-gnu/%s/include-fixed/%s",versionGcc,"%s");
-    memset(PathSearch[3], '\0', linesize);
-    strcpy(PathSearch[3],"/usr/include/x86_64-linux-gnu/%s");
-    memset(PathSearch[4], '\0', linesize);
-    strcpy(PathSearch[4],"/usr/include/%s");
     posLast=0;
     strcpy(def,"define");
     strcpy(inc,"include");
@@ -431,7 +420,7 @@ int Preprosesar(char* input,char* output){
 
     if (Input==NULL){
 	    printf("Archivo de entrada no encontrado\n");
-      printf("El archivo debe tener extensión .c\n");
+        printf("El archivo debe tener extensión .c\n");
 	    return 0;
     }
     FILE* Output=fopen(output,"w");

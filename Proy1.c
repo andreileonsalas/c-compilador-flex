@@ -157,6 +157,7 @@ int main(int argc, char *argv[])
 //preprocesador
 	char*filename=(char*)malloc(256 * sizeof(char));
 	sprintf (filename,"%s",argv[1]);
+	printf(argv[1]);
 	Preprosesar(filename,"TSource.in");
 	stdin = freopen("TSource.in", "r", stdin); 
 //preprocesador
