@@ -155,17 +155,17 @@ void writeTokensToDatafile(void)
 int main(int argc, char *argv[])
 {
 //preprocesador
-	char*filename=(char*)malloc(256 * sizeof(char));
-	sprintf (filename,"%s",argv[1]);
-	printf(argv[1]);
-	//Preprosesar(filename,"TSource.in");
-	//gcc -E -C %s > andrei.in",filename
-	char*temp=(char*)malloc(256 * sizeof(char));
-	strcpy(temp,"gcc -E -C ");
-	strcat(temp,filename);
-	strcat(temp," > andrei.in");
-	system(temp);
-	stdin = freopen("andrei.in", "r", stdin); 
+	// char*filename=(char*)malloc(256 * sizeof(char));
+	// sprintf (filename,"%s",argv[1]);
+	// printf(argv[1]);
+	// //Preprosesar(filename,"TSource.in");
+	// //gcc -E -C %s > andrei.in",filename
+	// char*temp=(char*)malloc(256 * sizeof(char));
+	// strcpy(temp,"gcc -E -C ");
+	// strcat(temp,filename);
+	// strcat(temp," > andrei.in");
+	// system(temp);
+	// stdin = freopen("andrei.in", "r", stdin); 
 //preprocesador
 
 	
