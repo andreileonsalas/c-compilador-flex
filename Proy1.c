@@ -158,8 +158,8 @@ int main(int argc, char *argv[])
 	char*filename=(char*)malloc(256 * sizeof(char));
 	sprintf (filename,"%s",argv[1]);
 	printf(argv[1]);
-	Preprosesar(filename,"TSource.in");
-	system("gcc -E -C Proy1.c > andrei.in");
+	//Preprosesar(filename,"TSource.in");
+	system("gcc -E -C %s > andrei.in",filename);
 	stdin = freopen("andrei.in", "r", stdin); 
 //preprocesador
 
