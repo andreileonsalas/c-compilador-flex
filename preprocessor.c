@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <dirent.h>
+#include "preprocessor.h"
 
 
 void newEntry(char* simb,char* val,char* args,int arg){
