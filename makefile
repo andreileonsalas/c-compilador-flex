@@ -1,3 +1,4 @@
+ccflags-y := -std=gnu99
 .SUFFIXES:
 all: lex scanner
 
