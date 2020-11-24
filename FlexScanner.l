@@ -58,7 +58,7 @@ OX[0-9abcdef]+			return CONSTANTLITERAL;
 '([^\r^\n^']|\\0)'				return CONSTANTCHAR;
 			/* strings */
 \"[^\"]*\" return CONSTANTSTRING;
-			
+
 
 		/* Identifier (variable names) */
 [a-zA-Z_][_a-zA-Z0-9]*	return IDENTIFIER;
@@ -72,26 +72,26 @@ OX[0-9abcdef]+			return CONSTANTLITERAL;
 \%						return OPERATOR;
 \+\+						return OPERATOR;
 "--"						return OPERATOR;
-					
-			/* relational */						
+
+			/* relational */
 ==						return OPERATOR;
 !=						return OPERATOR;
 \> 						return OPERATOR;
 \< 						return OPERATOR;
 \>=						return OPERATOR;
 \<=						return OPERATOR;
-			/* logical */						
+			/* logical */
 &&						return OPERATOR;
 \|\|						return OPERATOR;
 !						return OPERATOR;
-			/* bitwise */					
+			/* bitwise */
 & 						return OPERATOR;
 \| 						return OPERATOR;
 \^ 						return OPERATOR;
 ~ 						return OPERATOR;
 \<\<						return OPERATOR;
 \>\>						return OPERATOR;
-			/* misc */					
+			/* misc */
 "?"						return OPERATOR;
 
 			/* punctuators */
@@ -110,7 +110,7 @@ OX[0-9abcdef]+			return CONSTANTLITERAL;
 		/* skip new lines and blank spaces */
 [ \t\n]					return BLANK;
 		/* everything not defined before is caught here, considered an error */
-.						return ERROR;	
+.						return ERROR;
 
 %%
 

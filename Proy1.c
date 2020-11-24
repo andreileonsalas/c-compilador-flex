@@ -131,24 +131,21 @@ void writeTokenToLatexFile(Row rowToken,FILE* file)
 void writeTokensToDatafile(void)
 {
 	file = fopen("datafile.dat","w");
-	fprintf(file, "x ");
-	for(int i=0; i<TOTALTOKENS-1; i++)
-		fprintf(file,"%s ",tokens[i]);
-	fprintf(file, "\n");
-	fprintf(file, "y ");
-	for(int i=0; i<=current_Hist_i; i++)
+	fprintf(file, "x, y\n");
+
+	// Itera sobre los índices del histograma (Cada 50 líneas son un índice)
+	for(int i=1; i<=current_Hist_i; i++)
 	{
-		//fprintf(file,"%d-%d ",i*HISTOGRAM_LINES,i*HISTOGRAM_LINES+HISTOGRAM_LINES);
-		for(int a=1; a<=TOTALTOKENS-2; a++)
+		// Itera sobre cada token del 0-9 (Solo ignora el token de ERROR)
+		for(int a=0; a<=TOTALTOKENS-2; a++)
 		{
-			histogram[i].token_count[0]+=histogram[i].token_count[a];
+			// Agrega sobre el primer índice del histograma la cantidad de apariciones que haya en los otros índices (ej. líneas 0-50, 50-100...).
+			histogram[0].token_count[a]+=histogram[i].token_count[a];
 		}
-
-		fprintf(file,"%d ",histogram[i].token_count[0]);
-
-
 	}
-
+	for(int f=0; f<TOTALTOKENS-2; f++) {
+		fprintf(file, "%s, %d\n",tokens[f], histogram[0].token_count[f]);
+	}
 	fclose(file);
 }
 
@@ -178,7 +175,7 @@ int main(void)
 	fclose(file);
 	writeTokensToDatafile();
 	// system(commands[0]); //gnuplot
-	system(commands[1]); //pdflatex
+	// system(commands[1]); //pdflatex
 	// system(commands[2]); //okular
 	return 0;
 }

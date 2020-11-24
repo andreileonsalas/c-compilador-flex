@@ -2,6 +2,8 @@
    sdfsdf
    World program */
 
+// Otro comentario
+
 #include <stdio.h>
 /* here another comment */
 main()
