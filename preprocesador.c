@@ -26,9 +26,8 @@ FILE** archivos;
 FILE *archivo_salida;
 int indice_pila = -1;
 char buffer[MAXCHARS];
-const char* compilar= "flex CCode.l";
-const char* compilar2 = "cc lex.yy.c -lfl -o ejecutable";
-const char* ejecutar = " ./ejecutable < archivo_salida.c";
+const char* compilar= "make";
+const char* ejecutar = " ./scanner < output.c";
 
 
 
@@ -61,7 +60,7 @@ void cambiar_en_tabla(char *nombre, char *valor);
 //implementacion de funciones-------------
 
 void crear_archivo_salida(){
-	archivo_salida = fopen("archivo_salida.c","w"); //w+
+	archivo_salida = fopen("output.c","w"); //w+
 }
 
 void cerrar_archivo_salida(){
@@ -580,26 +579,26 @@ int main(int argc, char** argv){
 
 	validar_entrada(argc, argv);
 
-	char ch;
-	do 
-    {
-        /* Read single character from file */
-        ch = fgetc(archivo_salida);
+	// char ch;
+	// do 
+    // {
+    //     /* Read single character from file */
+    //     ch = fgetc(archivo_salida);
 
-        /* Print character read on console */
-        putchar(archivo_salida);
+    //     /* Print character read on console */
+    //     putchar(archivo_salida);
 
-    } while(ch != EOF); /* Repeat this if last read character is not EOF */
+    // } while(ch != EOF); /* Repeat this if last read character is not EOF */
 	//free(archivos);
 	
 	
 	imprimir();
 	
 	cerrar_archivo_salida();
-	printf("Probando 123 \n");
-	//system(compilar);
-	//system(compilar2);
-	//system(ejecutar);
+	printf("Ejecutando Scanner \n");
+	system(compilar);
+	
+	system(ejecutar);
 
 	return 0;
 }
