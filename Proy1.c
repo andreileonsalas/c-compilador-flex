@@ -131,7 +131,7 @@ void writeTokenToLatexFile(Row rowToken,FILE* file)
 void writeTokensToDatafile(void)
 {
 	file = fopen("datafile.dat","w");
-	fprintf(file, "x, y");
+	fprintf(file, "x, y\n");
 
 	for(int i=0; i<=current_Hist_i; i++)
 	{
@@ -140,7 +140,7 @@ void writeTokensToDatafile(void)
 		{
 			histogram[i].token_count[0]+=histogram[i].token_count[a];
 		}
-		fprintf(file,"%s, %d ", tokens[i], histogram[i].token_count[0]);
+		fprintf(file,"%s, %d \n", tokens[i], histogram[i].token_count[0]);
 	}
 
 	fclose(file);
