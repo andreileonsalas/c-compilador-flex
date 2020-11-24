@@ -21,10 +21,10 @@ struct nodo{
 
 nodo* primero = NULL;
 nodo* ultimo = NULL;
-int validacion_entrada = 1;
+int validateInput = 1;
 FILE** archivos;
-FILE *archivo_salida;
-int indice_pila = -1;
+FILE *outputFile;
+int indexPila = -1;
 char buffer[MAXCHARS];
 const char* compilar= "make";
 const char* ejecutar = " ./scanner < output.c";
@@ -33,15 +33,15 @@ const char* ejecutar = " ./scanner < output.c";
 
 
 //declararion de funciones--------------------------------------------------------------------
-void crear_archivo_salida();
-void cerrar_archivo_salida();
+void createOutput();
+void closeOutput();
 void validar_entrada(int argc, char** argv);
 void reset();
-void agregar_archivo(char* nombre_archivo);
+void agregar_archivo(char* fileName);
 void limpiar_buffer();
 void validar_include(char* tira);
 void validar_define(char* tira);
-void agregar_archivo2(char* nombre_archivo);
+void agregar_archivo2(char* fileName);
 void agregar_define(char* nombre, char* valor);
 void imprimir();
 void analizar_buffer(char* linea);
@@ -59,12 +59,12 @@ void cambiar_en_tabla(char *nombre, char *valor);
 
 //implementacion de funciones-------------
 
-void crear_archivo_salida(){
-	archivo_salida = fopen("output.c","w"); //w+
+void createOutput(){
+	outputFile = fopen("output.c","w"); //w+
 }
 
-void cerrar_archivo_salida(){
-	fclose(archivo_salida);
+void closeOutput(){
+	fclose(outputFile);
 }
 
 
@@ -72,10 +72,9 @@ void cerrar_archivo_salida(){
 
 //funcion que setea variables a valores predefinidos
 void reset(){
-	
-	validacion_entrada = 1;
 	archivos = malloc(sizeof(FILE*) * MAXARCHIVOS);
-	indice_pila = -1;
+	validateInput = 1;
+	indexPila = -1;
 	
 }
 
@@ -86,13 +85,13 @@ void validar_entrada(int argc, char** argv){
 	if (argc != 2){
 		printf("Error, se debe pasar exactamente el nombre de un archivo seguido de .c\n");
 	}else{
-		char* nombre_archivo = argv[argc-1];
-		int largo_nombre_archivo = strlen(nombre_archivo);
+		char* fileName = argv[argc-1];
+		int largo_nombre_archivo = strlen(fileName);
 		
 		//revisamos si archivo termina en .c
-		if (nombre_archivo[largo_nombre_archivo-1] == 'c'  && nombre_archivo[largo_nombre_archivo-2] == '.'){
-				validacion_entrada = 0;
-				agregar_archivo(nombre_archivo);
+		if (fileName[largo_nombre_archivo-1] == 'c'  && fileName[largo_nombre_archivo-2] == '.'){
+				validateInput = 0;
+				agregar_archivo(fileName);
 				realizar_lectura(archivos[0]);
 				fclose(archivos[0]);
 		}else{
@@ -105,27 +104,27 @@ void validar_entrada(int argc, char** argv){
 
 
 //funcion para abrir includes
-void agregar_archivo2(char* nombre_archivo){
+void agregar_archivo2(char* fileName){
 	FILE* archivo;
-	archivo = fopen(nombre_archivo,"r");
+	archivo = fopen(fileName,"r");
 	if(archivo){
-		archivos[++indice_pila] = archivo;
-		int num_indice = indice_pila;
-		//printf("#include %s \n",nombre_archivo); 
-		fprintf(archivo_salida,"//#include %s \n",nombre_archivo);
+		archivos[++indexPila] = archivo;
+		int num_indice = indexPila;
+		//printf("#include %s \n",fileName); 
+		fprintf(outputFile,"//#include %s \n",fileName);
 		realizar_lectura(archivo); 
 		printf("Indice: %d \n",num_indice);
 		fclose(archivos[num_indice]);
 		}
 	else{
-		printf("Error en el include %s \n",nombre_archivo);
+		printf("Error en el include %s \n",fileName);
 		}	
 }
 
-void agregar_archivo(char* nombre_archivo){
+void agregar_archivo(char* fileName){
 
-	archivos[++indice_pila] = fopen(nombre_archivo,"r");
-	//printf("Archivo agregado %s \n",nombre_archivo);
+	archivos[++indexPila] = fopen(fileName,"r");
+	//printf("Archivo agregado %s \n",fileName);
 	
 }
 
@@ -201,7 +200,7 @@ void validar_include(char* tira){
 
 	
 	
-	if((tira[n] != '"') ){ if((tira[n] == '<') ){ fprintf(archivo_salida,"%s \n",tira); //printf("%s \n",tira); //aqui poner en el archivo
+	if((tira[n] != '"') ){ if((tira[n] == '<') ){ fprintf(outputFile,"%s \n",tira); //printf("%s \n",tira); //aqui poner en el archivo
 		} else {printf("Error en el include \n");}}
 	else{
    
@@ -301,7 +300,7 @@ void agregar_define(char* nombre, char* valor){
 			char *nombre2 = encontrar_nombre(valor);
 			  nuevo_valor = cambiar_palabra(valor,nombre2,nuevo_valor);
 			  strcpy(nuevo->valor,nuevo_valor);
-			  fprintf(archivo_salida,"//#define %s %s \n",nombre,nuevo->valor);
+			  fprintf(outputFile,"//#define %s %s \n",nombre,nuevo->valor);
 			}else{	
 				nodo* actual = primero;
 				int distinto =1;
@@ -309,7 +308,7 @@ void agregar_define(char* nombre, char* valor){
 					
 				if(strcmp(valor,actual->nombre) == 0){ //son iguales
 					  strcpy(nuevo->valor,actual->valor);
-					  fprintf(archivo_salida,"//#define  %s %s \n",nombre,nuevo->valor);
+					  fprintf(outputFile,"//#define  %s %s \n",nombre,nuevo->valor);
 					  distinto = 0;
 					  break;
 					}						
@@ -317,7 +316,7 @@ void agregar_define(char* nombre, char* valor){
 				}
 				if(distinto == 1){ //no se habian definido antes
 						strcpy(nuevo->valor,valor);
-						fprintf(archivo_salida,"//#define  %s %s \n",nombre,nuevo->valor);}
+						fprintf(outputFile,"//#define  %s %s \n",nombre,nuevo->valor);}
 				}	
 	nuevo->siguiente = NULL;
 	if( ver_existencia(nuevo) == 1){
@@ -390,7 +389,7 @@ void analizar_buffer(char* linea){
 			nuevo_valor = encontrar_valor(linea);
 			//no encontro valor
 			if(strcmp(nuevo_valor,"") == 0){
-					fprintf(archivo_salida,"%s\n",linea);
+					fprintf(outputFile,"%s\n",linea);
 			}	
 			else{ //si encontro valor 
 				  char *nombre = encontrar_nombre(linea);
@@ -402,7 +401,7 @@ void analizar_buffer(char* linea){
 					  }else{nombre = "";}	//ya no encontro valor, salir del while	  
 					  
 					}
-				   fprintf(archivo_salida,"%s \n",linea);
+				   fprintf(outputFile,"%s \n",linea);
 				  
 				}
 			}
@@ -575,7 +574,7 @@ char *cambiar_palabra(char *fila, char *encontrar, char *reemplazo)
 
 
 int main(int argc, char** argv){
-	crear_archivo_salida();
+	createOutput();
 
 	validar_entrada(argc, argv);
 
@@ -594,7 +593,7 @@ int main(int argc, char** argv){
 	
 	imprimir();
 	
-	cerrar_archivo_salida();
+	closeOutput();
 	printf("Ejecutando Scanner \n");
 	system(compilar);
 	
