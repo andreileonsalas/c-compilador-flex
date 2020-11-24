@@ -1,4 +1,3 @@
-#include "test.c"
 void main()
 {
    int a = 0;
