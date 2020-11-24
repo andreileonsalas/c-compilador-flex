@@ -2,9 +2,14 @@
 \documentclass[10pt,xcolor={dvipsnames}]{beamer}
 \usetheme{Warsaw}
 \usepackage{tikz}
+\usepackage{pgf-pie}
+\usepackage{pgfplots}
 \usepackage{xcolor}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
 \usepackage{fancyvrb}
 \usepackage{xspace}
+\usepackage[utf8]{inputenc}
+
 
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
 
@@ -78,6 +83,26 @@ Examiners:  \\
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile,allowframebreaks]{Analisis Léxico}
+        \begin{alertblock}{Codigo fuente}
+            A continuación se presenta el código fuente con colores demostrando la división de \textit{tokens}.
+            \end{alertblock}
+\end{frame}
+\input{source.tex}
+
+\begin{frame}[fragile,allowframebreaks]{Histograma}
+        \begin{alertblock}{Histograma}
+            A continuación se presenta un histograma que muestra la cantidad de cada tipo de \textit{token} encontrado en el código fuente:
+            \end{alertblock}
+\end{frame}
+\input{histograma.tex}
+
+\begin{frame}[fragile,allowframebreaks]{Grafico Pie}
+        \begin{alertblock}{Pie Chart}
+            A continuación se presenta un grafico de pie que muestra la cantidad de cada tipo de \textit{token} encontrado en el código fuente:
+            \end{alertblock}
+\end{frame}
+\input{piechart.tex}
 
 
 \end{document}
