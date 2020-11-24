@@ -174,8 +174,8 @@ int main(void)
 	writeLatexFileEnd(file);
 	fclose(file);
 	writeTokensToDatafile();
-	// system(commands[0]); //gnuplot
-	// system(commands[1]); //pdflatex
-	// system(commands[2]); //okular
+	system(commands[0]); //gnuplot
+	system(commands[1]); //pdflatex
+	system(commands[2]); //okular
 	return 0;
 }
