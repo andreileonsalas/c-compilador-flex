@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <libgen.h>
 #include "Proy1.h"
-
 
 #define NEWFRM 250
 #define HISTOGRAM_LINES 50
@@ -27,7 +25,7 @@ int yylinelastcount_H = 1;
 char* tokens[TOTALTOKENS] = {"PREPROCESSOR","COMMENT","KEYWORD","IDENTIFIER","CONSTANTLITERAL","CONSTANTCHAR","CONSTANTSTRING","OPERATOR","PUNCTUATOR","BLANK","ERROR"};
 char* colors[TOTALTOKENS] = {"OliveDrab3","Azure4","Turquoise3","Tomato2","HotPink1","Tan2","IndianRed1","DarkOrchid3","SeaGreen3","White","OrangeRed3"};
 
-char * commands[]={"gnuplot \"histogram_script.gnu\"","pdflatex beamer.tex","okular beamer.pdf --presentation"};
+char * commands[]={"gnuplot \"histogram_script.gnu\"","pdflatex main.tex","okular beamer.pdf --presentation"};
 
 FILE* file;
 char* latexFile = "source.tex";
@@ -137,38 +135,25 @@ void writeTokensToDatafile(void)
 	for(int i=0; i<TOTALTOKENS-1; i++)
 		fprintf(file,"%s ",tokens[i]);
 	fprintf(file, "\n");
+	fprintf(file, "y ");
 	for(int i=0; i<=current_Hist_i; i++)
 	{
-		fprintf(file,"%d-%d ",i*HISTOGRAM_LINES,i*HISTOGRAM_LINES+HISTOGRAM_LINES);
-		for(int a=0; a<=TOTALTOKENS-2; a++)
+		//fprintf(file,"%d-%d ",i*HISTOGRAM_LINES,i*HISTOGRAM_LINES+HISTOGRAM_LINES);
+		for(int a=1; a<=TOTALTOKENS-2; a++)
 		{
-			fprintf(file,"%d ",histogram[i].token_count[a]);
+			histogram[i].token_count[0]+=histogram[i].token_count[a];
 		}
-		fprintf(file,"\n");
+
+		fprintf(file,"%d ",histogram[i].token_count[0]);
+
+
 	}
+
 	fclose(file);
 }
 
-
-
-
-int main(int argc, char *argv[])
+int main(void)
 {
-//preprocesador
-	// char*filename=(char*)malloc(256 * sizeof(char));
-	// sprintf (filename,"%s",argv[1]);
-	// printf(argv[1]);
-	// //Preprosesar(filename,"TSource.in");
-	// //gcc -E -C %s > andrei.in",filename
-	// char*temp=(char*)malloc(256 * sizeof(char));
-	// strcpy(temp,"gcc -E -C ");
-	// strcat(temp,filename);
-	// strcat(temp," > andrei.in");
-	// system(temp);
-	// stdin = freopen("andrei.in", "r", stdin); 
-//preprocesador
-
-	
 	histogram = malloc (HSTGRM_SIZE * sizeof(*histogram));
 	current_Hist_s = HSTGRM_SIZE;
 	#if DEBUG
@@ -176,7 +161,6 @@ int main(int argc, char *argv[])
 		printf(" n:%d ",histogram[0].token_count[i]);
 	#endif
 	file = fopen(latexFile,"w");
-
 	Row rowToken;
 	rowToken = getToken();
 	writeLatexFileStart(file);
@@ -194,8 +178,7 @@ int main(int argc, char *argv[])
 	fclose(file);
 	writeTokensToDatafile();
 	// system(commands[0]); //gnuplot
-	// system(commands[1]); //pdflatex
+	system(commands[1]); //pdflatex
 	// system(commands[2]); //okular
 	return 0;
 }
-

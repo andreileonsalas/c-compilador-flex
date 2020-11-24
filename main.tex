@@ -1,0 +1,83 @@
+\PassOptionsToPackage{demo}{graphicx}
+\documentclass[10pt,xcolor={dvipsnames}]{beamer}
+\usetheme{Warsaw}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{xspace}
+
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\makeatletter
+\newcommand\titlegraphicii[1]{\def\inserttitlegraphicii{#1}}
+\titlegraphicii{}
+\setbeamertemplate{Presentaciòn Beamer}
+{
+  \vbox{}
+   {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\hfill\inserttitlegraphicii\par}
+  \begin{centering}
+    \begin{beamercolorbox}[sep=8pt,center]{institute}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%     
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}%\vskip0.5em
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+  \end{centering}
+  %\vfill
+}
+\makeatother
+\title{Presentacion Beamer}
+\subtitle{Proyecto 1}
+\institute{Compiladores e Interpretes \\ Instituto Tecnologico de Costa Rica}
+\date{2020}
+
+\begin{document}
+
+\begin{frame}[plain]
+\maketitle
+\small
+Profesor: Dr. Jose Francisco Torres\par\medskip
+\begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.32\textwidth}@{}}
+Examiners:  \\
+& Nakisha Dixon 2017103353 \\
+& Andrei Leon 201015265 \\
+& Francisco Pereira 2017238806
+\end{tabular}%
+\footnotesize
+\end{frame}
+
+\begin{frame}
+\frametitle{Tabla de contenidos}
+\tableofcontents
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Flex}
+        \begin{alertblock}{Scanner}
+            FLEX (generador de analizador léxico rápido) es una herramienta para generar analizadores léxicos (escáneres o lexers) escrito por Vern Paxson en C alrededor de 1987. Se usa junto con el generador de parser Berkeley Yacc o el generador de parser GNU Bison
+            \end{alertblock}
+\end{frame}
+
+\begin{frame}
+\frametitle{Proceso de Scanning}
+\begin{itemize}
+ \item<1-> Flex genera un archivo .C como salida, ‘lex.yy.c’ (contiene un montón de código incomprensible pero que básicamente contiene las reglas que especificamos en el incluyendo el código para las acciones que especifiquemos). Este archivo contiene una extern function llamada yylex() que escanea un token. 
+ \item<2-> Este archivo se compila y se conecta con la librería ‘lfl’ para producir un ejecutable. Cuando se corre el ejecutable, analiza cierta entrada buscando ocurrencias de las expresiones regulares. 
+ \item<3> Cuando encuentra cierta expresión regular, ejecuta cierto código correspondiente que se le asignó. 
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

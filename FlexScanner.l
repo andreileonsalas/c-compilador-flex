@@ -24,8 +24,9 @@ sizeof									return KEYWORD;
 volatile								return KEYWORD;
 
 static									return KEYWORD;
-unsigned								return KEYWORD;
+[unsigned]+[char]								return KEYWORD;
 signed									return KEYWORD;
+short										return KEYWORD;
 void										return KEYWORD;
 int											return KEYWORD;
 double									return KEYWORD;
@@ -33,7 +34,6 @@ long										return KEYWORD;
 char										return KEYWORD;
 const										return KEYWORD;
 float										return KEYWORD;
-short										return KEYWORD;
 union										return KEYWORD;
 enum										return KEYWORD;
 struct									return KEYWORD;
@@ -49,10 +49,10 @@ break										return KEYWORD;
 continue								return KEYWORD;
 
  /* Constants */
-[-+]?[0-9]+							return CONSTANTLITERAL; // Decimal constant
+[0-9]+									return CONSTANTLITERAL; // Decimal constant
 O[0-9]+									return CONSTANTLITERAL; // Octal constant
 OX[0-9abcdef]+					return CONSTANTLITERAL; // Hex constant
-[-+]?[0-9]+(\.[0-9]+)?	return CONSTANTLITERAL; // Real constant
+[0-9]+(\.[0-9]+)?				return CONSTANTLITERAL; // Real constant
 
 '([^\r^\n^']|\\0)'			return CONSTANTCHAR; // Single char constant
 
@@ -101,8 +101,6 @@ OX[0-9abcdef]+					return CONSTANTLITERAL; // Hex constant
 :												return PUNCTUATOR;
 ;												return PUNCTUATOR;
 =												return PUNCTUATOR;
-
-
 
 
 [ \t\n]									return BLANK; // New lines and black spaces
