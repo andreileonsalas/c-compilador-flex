@@ -1,5 +1,5 @@
 %{
-#include "scanner.h"
+#include "Proy1.h"
 %}
 %option nounput yylineno
 
