@@ -146,7 +146,7 @@ void writeTokensToDatafile(void)
 	for(int f=0; f<TOTALTOKENS-2; f++) {
 		fprintf(file, "%s, %d\n",tokens[f], histogram[0].token_count[f]);
 	}
-	fprintf(file,"z,0");
+	//fprintf(file,"z,0");
 	fclose(file);
 }
 
