@@ -26,8 +26,8 @@ FILE** archivos;
 FILE *outputFile;
 int indexPila = -1;
 char buffer[MAXCHARS];
-const char* compilar= "make";//comando 1
-const char* ejecutar = " ./scanner < output.c";//comando 2
+const char* makedelscanner= "make";//comando 1
+const char* ejecutarscanner = " ./scanner < output.c";//comando 2
 
 
 
@@ -45,7 +45,7 @@ void includeValidation(char* tira);
 void defineValidation(char* tira);
 void addFileInclude(char* fileName);
 void addDefine(char* nombre, char* valor);
-void printInfo();
+//void printInfo();
 void analizeBuffer(char* linea);
 void readFile(FILE* archivo1);
 int checkExistence(nodo* nodo1);
@@ -351,14 +351,14 @@ void tableChange(char *nombre, char *valor) {
 
 
 
-
-void printInfo(){
-	nodo* actual = primero;
-	while(actual != NULL){
-		printf(" tipo de elemento, el nombre y su valor son: %s %s %s \n",actual->tipo,actual->nombre,actual->valor); 
-		actual = actual->siguiente;		
-		}	
-}
+//no esta imprimiendo, pero igual no se pide en la progra, lo dejo comentado
+// void printInfo(){
+// 	nodo* actual = primero;
+// 	while(actual != NULL){
+// 		printf(" tipo de elemento, el nombre y su valor son: %s %s %s \n",actual->tipo,actual->nombre,actual->valor); 
+// 		actual = actual->siguiente;		
+// 		}	
+// }
 
 int checkExistence(nodo* nodo1){ //0 for true, 1 for false (not exist)
 	nodo* actual = primero;
@@ -496,13 +496,14 @@ char *findName(char *linea){
 	nodo* actual = primero;
 	char* temporal = NULL;
 	while(actual != NULL && strcmp(actual->tipo,"define") == 0){
-		//+
-		asprintf(&temporal, "%s%s", actual->nombre,"+");
+
+		//-
+		asprintf(&temporal, "%s%s", actual->nombre,"-");
 		if (strstr(linea, temporal) != NULL) {
 			return actual->nombre;
 		}
-		//-
-		asprintf(&temporal, "%s%s", actual->nombre,"-");
+		//+
+		asprintf(&temporal, "%s%s", actual->nombre,"+");
 		if (strstr(linea, temporal) != NULL) {
 			return actual->nombre;
 		}
@@ -516,11 +517,7 @@ char *findName(char *linea){
 		if (strstr(linea, temporal) != NULL) {
 			return actual->nombre;
 		}
-		// =
-		asprintf(&temporal, "%s%s", actual->nombre,"=");
-		if (strstr(linea, temporal) != NULL) { 
-			printf("Error en el define, no se puede sobreescribir %s \n",actual->nombre);
-		}
+
 		// espacio
 		asprintf(&temporal, "%s%c", actual->nombre,' ');		
 		if (strstr(linea, temporal) != NULL) { 
@@ -536,11 +533,12 @@ char *findName(char *linea){
 		if (strstr(linea, temporal) != NULL) { 
 			return actual->nombre;
 		}
-		// ;
-		asprintf(&temporal, "%s%s", actual->nombre,";");
+		// =
+		asprintf(&temporal, "%s%s", actual->nombre,"=");
 		if (strstr(linea, temporal) != NULL) { 
-			return actual->nombre;
+			printf("Error en el define, no se puede sobreescribir %s \n",actual->nombre);
 		}
+
 		// si es exactamente igual
 		if (strcmp(linea, actual->nombre) == 0) { 
 			return actual->nombre;
@@ -548,6 +546,11 @@ char *findName(char *linea){
 		//Salto de linea antes
 		asprintf(&temporal, "%c%s",'\n', actual->nombre);
 		if(strcmp(linea, temporal) == 0){
+			return actual->nombre;
+		}
+		// ;
+		asprintf(&temporal, "%s%s", actual->nombre,";");
+		if (strstr(linea, temporal) != NULL) { 
 			return actual->nombre;
 		}
 		actual = actual->siguiente;		
@@ -602,9 +605,9 @@ int main(int argc, char** argv){
 	
 	closeOutput();
 	printf("Ejecutando Scanner \n");
-	system(compilar);
+	system(makedelscanner);
 	
-	system(ejecutar);
+	system(ejecutarscanner);
 
 	return 0;
 }
