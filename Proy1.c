@@ -122,7 +122,7 @@ void writeTokenToLatexFile(Row rowToken,FILE* file)
 	}
 	if(rowToken.token!=COMMENT&&rowToken.token!=BLANK)
 	{
-		fprintf(file,"\\color{%s}\\verb$%s$", colors[rowToken.token-1],rowToken.lexeme);
+		//fprintf(file,"\\color{%s}\\verb$%s$", colors[rowToken.token-1],rowToken.lexeme);
 	}
 	/* Increase the token count in histogram index */
 	histogram[current_Hist_i].token_count[rowToken.token-1]++;
