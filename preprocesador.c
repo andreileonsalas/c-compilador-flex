@@ -41,7 +41,7 @@ void addFile(char* fileName);
 void cleanBuffer();
 void includeValidation(char* tira);
 void defineValidation(char* tira);
-void addFile(char* fileName);
+void addFileInclude(char* fileName);
 void addDefine(char* nombre, char* valor);
 void printInfo();
 void analizeBuffer(char* linea);
@@ -104,7 +104,7 @@ void inputValidation(int argc, char** argv){
 
 
 //funcion para abrir includes
-void addFile(char* fileName){
+void addFileInclude(char* fileName){
 	FILE* archivo;
 	archivo = fopen(fileName,"r");
 	if(archivo){
@@ -208,7 +208,7 @@ void includeValidation(char* tira){
 		 while(1){
 			 if(tira[n] == 0){printf("Error en el include \n"); break;}
 			 if ( (tira[n] == '"') ){
-				 addFile(nombre);  //Aqui trata de abrir con el nombre y si esta incorrecto no lo guardamos
+				 addFileInclude(nombre);  //Aqui trata de abrir con el nombre y si esta incorrecto no lo guardamos
 				 break;			 
 				}else{
 					
