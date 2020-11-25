@@ -9,6 +9,8 @@
 \usepackage{fancyvrb}
 \usepackage{xspace}
 \usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
 
 
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
@@ -93,7 +95,13 @@ Examiners:  \\
         \begin{alertblock}{Codigo fuente}
             A continuación se presenta el código fuente con colores demostrando la división de \textit{tokens}.
             \end{alertblock}
+        
 \end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Analisis Léxico|claves de color}
+\graphicspath{ {./images/} }
+\end{frame}
+
 \input{source.tex}
 
 \section{Histograma}
