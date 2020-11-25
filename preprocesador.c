@@ -605,7 +605,7 @@ int main(int argc, char** argv){
 	
 	closeOutput();
 	printf("Ejecutando Scanner \n");
-	system(makedelscanner);
+	//system(makedelscanner);
 	
 	system(ejecutarscanner);
 
