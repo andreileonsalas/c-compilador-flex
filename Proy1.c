@@ -25,7 +25,7 @@ int yylinelastcount_H = 1;
 char* tokens[TOTALTOKENS] = {"PREPROCESSOR","COMMENT","KEYWORD","IDENTIFIER","CONSTANTLITERAL","CONSTANTCHAR","CONSTANTSTRING","OPERATOR","PUNCTUATOR","BLANK","ERROR"};
 char* colors[TOTALTOKENS] = {"OliveDrab3","Azure4","Turquoise3","Tomato2","HotPink1","Tan2","IndianRed1","DarkOrchid3","SeaGreen3","White","OrangeRed3"};
 
-char * commands[]={"gnuplot \"histogram_script.gnu\"","pdflatex main.tex","okular main.pdf --presentation"};
+char * commands[]={"pdflatex main.tex","okular main.pdf --presentation"};
 
 FILE* file;
 char* latexFile = "source.tex";
@@ -146,7 +146,6 @@ void writeTokensToDatafile(void)
 	for(int f=0; f<TOTALTOKENS-2; f++) {
 		fprintf(file, "%s, %d\n",tokens[f], histogram[0].token_count[f]);
 	}
-	fprintf(file,"z,0");
 	fclose(file);
 }
 
@@ -175,8 +174,7 @@ int main(void)
 	writeLatexFileEnd(file);
 	fclose(file);
 	writeTokensToDatafile();
-	system(commands[0]); //gnuplot
-	system(commands[1]); //pdflatex
-	system(commands[2]); //okular
+	system(commands[0]); //pdflatex
+	system(commands[1]); //okular
 	return 0;
 }
