@@ -33,6 +33,8 @@ const char* ejecutar = " ./scanner < output.c";//comando 2
 
 
 //Funciones del preprocesador
+
+
 void createOutput();
 void closeOutput();
 void inputValidation(int argc, char** argv);
@@ -57,7 +59,7 @@ void tableChange(char *nombre, char *valor);
 
 
 
-//implementacion de funciones-------------
+//abrir y cerrar archivo
 
 void createOutput(){
 	outputFile = fopen("output.c","w"); //w+
@@ -70,7 +72,8 @@ void closeOutput(){
 
 
 
-//funcion que setea variables a valores predefinidos
+
+
 void reset(){
 	archivos = malloc(sizeof(FILE*) * MAXARCHIVOS);
 	validateInput = 1;
@@ -78,24 +81,24 @@ void reset(){
 	
 }
 
-//funcion que valida que se este ingresando un archivo.c de entrada estandar
+//validate c file
 void inputValidation(int argc, char** argv){
 	reset();
 	
 	if (argc != 2){
-		printf("Error, se debe pasar exactamente el nombre de un archivo seguido de .c\n");
+		printf("Error, se espera solo un argumento\n");
 	}else{
 		char* fileName = argv[argc-1];
 		int largo_nombre_archivo = strlen(fileName);
+		//check for c extention
 		
-		//revisamos si archivo termina en .c
 		if (fileName[largo_nombre_archivo-1] == 'c'  && fileName[largo_nombre_archivo-2] == '.'){
 				validateInput = 0;
 				addFile(fileName);
 				readFile(archivos[0]);
 				fclose(archivos[0]);
 		}else{
-				printf("Debe ingresar un archivo con extension .c \n");
+				printf("tiene que tener la extension .c \n");
 		}
 	}
 }
@@ -103,7 +106,9 @@ void inputValidation(int argc, char** argv){
 
 
 
+
 //funcion para abrir includes
+
 void addFileInclude(char* fileName){
 	FILE* archivo;
 	archivo = fopen(fileName,"r");
@@ -111,9 +116,12 @@ void addFileInclude(char* fileName){
 		archivos[++indexPila] = archivo;
 		int num_indice = indexPila;
 		//printf("#include %s \n",fileName); 
+
 		fprintf(outputFile,"//#include %s \n",fileName);
 		readFile(archivo); 
+
 		printf("Indice: %d \n",num_indice);
+
 		fclose(archivos[num_indice]);
 		}
 	else{
@@ -124,13 +132,12 @@ void addFileInclude(char* fileName){
 void addFile(char* fileName){
 
 	archivos[++indexPila] = fopen(fileName,"r");
-	//printf("Archivo agregado %s \n",fileName);
 	
 }
 
 
 
-//funcion que limpia buffer
+//limpiar buffer
 void cleanBuffer(){
 	int i;
 	for (i = 0; i < MAXCHARS; i++){
@@ -139,7 +146,6 @@ void cleanBuffer(){
 }
 
 
-//funcion que realizar lectura de archivos
 void readFile(FILE* archivo_actual){	
 	int indice_buffer = 0;
 	char c;
@@ -174,7 +180,6 @@ void includeValidation(char* tira){
 	} if(tira[n] == '#'){n=n+9;}
 	 int indice =0;
 	 char nombre[MAXCHARS];
-	 //limpiar el nombre
 	 int p;
 	 for (p = 0; p < MAXCHARS; p++){
 		nombre[p] = 0;
@@ -200,7 +205,7 @@ void includeValidation(char* tira){
 
 	
 	
-	if((tira[n] != '"') ){ if((tira[n] == '<') ){ fprintf(outputFile,"%s \n",tira); //printf("%s \n",tira); //aqui poner en el archivo
+	if((tira[n] != '"') ){ if((tira[n] == '<') ){ fprintf(outputFile,"%s \n",tira); 
 		} else {printf("Error en el include \n");}}
 	else{
    
@@ -208,7 +213,7 @@ void includeValidation(char* tira){
 		 while(1){
 			 if(tira[n] == 0){printf("Error en el include \n"); break;}
 			 if ( (tira[n] == '"') ){
-				 addFileInclude(nombre);  //Aqui trata de abrir con el nombre y si esta incorrecto no lo guardamos
+				 addFileInclude(nombre);
 				 break;			 
 				}else{
 					
@@ -244,7 +249,6 @@ void defineValidation(char* tira){
 	 int indice2 =0;
 	 char nombre[MAXCHARS];
 	 char nombre2[MAXCHARS];
-	 //limpiar los nombres
 	 int p;
 	 for (p = 0; p < MAXCHARS; p++){
 		nombre[p] = 0;
@@ -293,7 +297,6 @@ void addDefine(char* nombre, char* valor){
 	nodo* nuevo = (nodo*) malloc(sizeof(nodo));
 	strcpy(nuevo->nombre,nombre);
 	strcpy(nuevo->tipo,"define");
-	//ver si el valor es un define previo 
 	char *nuevo_valor;
 		nuevo_valor = findValue(valor);
 		if(strcmp(nuevo_valor,"")){
@@ -306,7 +309,7 @@ void addDefine(char* nombre, char* valor){
 				int distinto =1;
 				while(actual != NULL && strcmp(actual->tipo,"define") == 0){
 					
-				if(strcmp(valor,actual->nombre) == 0){ //son iguales
+				if(strcmp(valor,actual->nombre) == 0){ 
 					  strcpy(nuevo->valor,actual->valor);
 					  fprintf(outputFile,"//#define  %s %s \n",nombre,nuevo->valor);
 					  distinto = 0;
@@ -314,7 +317,7 @@ void addDefine(char* nombre, char* valor){
 					}						
 				actual = actual->siguiente;		
 				}
-				if(distinto == 1){ //no se habian definido antes
+				if(distinto == 1){
 						strcpy(nuevo->valor,valor);
 						fprintf(outputFile,"//#define  %s %s \n",nombre,nuevo->valor);}
 				}	
@@ -329,7 +332,7 @@ void addDefine(char* nombre, char* valor){
 			nodo_actual->siguiente = nuevo;
 		}
 		
-	}else{tableChange(nombre,nuevo->valor); printf("Warning : Ya existe un define llamado %s \n",nombre);}
+	}else{tableChange(nombre,nuevo->valor); printf("Se esta repitiendo el define: %s \n",nombre);}
 }
 
 
@@ -339,7 +342,6 @@ void tableChange(char *nombre, char *valor) {
 	while(actual != NULL){
 		if(strcmp(actual->nombre,nombre) == 0){
 			strcpy(actual->valor,valor);
-			//printf("Cambie  %s por el nuevo valor %s \n",actual->nombre,actual->valor);
 		} 
 		actual = actual->siguiente;		
 		}	
@@ -353,7 +355,7 @@ void tableChange(char *nombre, char *valor) {
 void printInfo(){
 	nodo* actual = primero;
 	while(actual != NULL){
-		printf(" tipo, nombre y valor: %s %s %s \n",actual->tipo,actual->nombre,actual->valor); 
+		printf(" tipo de elemento, el nombre y su valor son: %s %s %s \n",actual->tipo,actual->nombre,actual->valor); 
 		actual = actual->siguiente;		
 		}	
 }
@@ -370,35 +372,37 @@ int checkExistence(nodo* nodo1){ //0 for true, 1 for false (not exist)
 
 void analizeBuffer(char* linea){
 	int n=0;
-	//Ver si hay espacios al inicio
+
 	while(1){
+		//white spaces
 		if (isspace(linea[n])){
 			 n++;
 		}else{
 			break;
 		}								 
 	}
-	//Ver si es un #include o un #define
+	
 	if(linea[n] == '#'){
+		//define
 		if(linea[n+1] == 'd' && linea[n+2] == 'e' && linea[n+3] == 'f' && linea[n+4] == 'i' && linea[n+5] == 'n' && linea[n+6] == 'e' && linea[n+7] == ' '){
 			defineValidation(linea);}
+		//include
 		if(linea[n+1] == 'i' && linea[n+2] == 'n' && linea[n+3] == 'c' && linea[n+4] == 'l' && linea[n+5] == 'u' && linea[n+6] == 'd' && linea[n+7] == 'e' && linea[n+8] == ' '){
 			includeValidation(linea);}
 	}else{
 			char *nuevo_valor;
 			nuevo_valor = findValue(linea);
-			//no encontro valor
 			if(strcmp(nuevo_valor,"") == 0){
 					fprintf(outputFile,"%s\n",linea);
 			}	
-			else{ //si encontro valor 
+			else{ 
 				  char *nombre = findName(linea);
 				  while(strcmp(nombre,"")){				 
 					  linea = replaceWord(linea,nombre,nuevo_valor);
 					  nuevo_valor = findValue(linea);
-					  if(strcmp(nuevo_valor,"")){// encontro otro valor	
+					  if(strcmp(nuevo_valor,"")){
 						nombre = findName(linea);	
-					  }else{nombre = "";}	//ya no encontro valor, salir del while	  
+					  }else{nombre = "";}	
 					  
 					}
 				   fprintf(outputFile,"%s \n",linea);
@@ -448,7 +452,7 @@ char *findValue(char *linea){
 		// =
 		asprintf(&temporal, "%s%s", actual->nombre,"=");
 		if (strstr(linea, temporal) != NULL) { 
-			printf("Error , no se puede redefinir el define %s \n",actual->nombre);
+			printf("Error en el define, no se puede sobreescribir %s \n",actual->nombre);
 		}
 		// espacio
 		asprintf(&temporal, "%s%c", actual->nombre,' ');		
@@ -470,8 +474,6 @@ char *findValue(char *linea){
 		if (strstr(linea, temporal) != NULL) { 
 			return actual->valor;
 		}
-		//si es exactamente igual
-		//printf("linea:%s? nombreactual:%s? soniguales: %d \n",linea,actual->nombre,strcmp(linea, actual->nombre));
 		if (strcmp(linea, actual->nombre) == 0) { 
 			return actual->valor;
 		}
@@ -485,6 +487,8 @@ char *findValue(char *linea){
 	return 	"";
 	}
 	
+
+
 char *findName(char *linea){
 	nodo* actual = primero;
 	char* temporal = NULL;
@@ -512,7 +516,7 @@ char *findName(char *linea){
 		// =
 		asprintf(&temporal, "%s%s", actual->nombre,"=");
 		if (strstr(linea, temporal) != NULL) { 
-			printf("Error , no se puede redefinir el define %s \n",actual->nombre);
+			printf("Error en el define, no se puede sobreescribir %s \n",actual->nombre);
 		}
 		// espacio
 		asprintf(&temporal, "%s%c", actual->nombre,' ');		
@@ -590,8 +594,8 @@ int main(int argc, char** argv){
     // } while(ch != EOF); /* Repeat this if last read character is not EOF */
 	//free(archivos);
 	
-	
-	printInfo();
+	//descomentar si funciona
+	//printInfo();
 	
 	closeOutput();
 	printf("Ejecutando Scanner \n");
