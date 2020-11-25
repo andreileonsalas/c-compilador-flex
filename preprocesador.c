@@ -429,13 +429,14 @@ char *findValue(char *linea){
 	nodo* actual = primero;
 	char* temporal = NULL;
 	while(actual != NULL && strcmp(actual->tipo,"define") == 0){
-		//+
-		asprintf(&temporal, "%s%s", actual->nombre,"+");
+
+		//-
+		asprintf(&temporal, "%s%s", actual->nombre,"-");
 		if (strstr(linea, temporal) != NULL) {
 			return actual->valor;
 		}
-		//-
-		asprintf(&temporal, "%s%s", actual->nombre,"-");
+		//+
+		asprintf(&temporal, "%s%s", actual->nombre,"+");
 		if (strstr(linea, temporal) != NULL) {
 			return actual->valor;
 		}
@@ -444,16 +445,17 @@ char *findValue(char *linea){
 		if (strstr(linea, temporal) != NULL) {
 			return actual->valor;
 		}
-		//  /
-		asprintf(&temporal, "%s%s", actual->nombre,"/");
-		if (strstr(linea, temporal) != NULL) {
-			return actual->valor;
-		}
 		// =
 		asprintf(&temporal, "%s%s", actual->nombre,"=");
 		if (strstr(linea, temporal) != NULL) { 
 			printf("Error en el define, no se puede sobreescribir %s \n",actual->nombre);
 		}
+		//  /
+		asprintf(&temporal, "%s%s", actual->nombre,"/");
+		if (strstr(linea, temporal) != NULL) {
+			return actual->valor;
+		}
+
 		// espacio
 		asprintf(&temporal, "%s%c", actual->nombre,' ');		
 		if (strstr(linea, temporal) != NULL) { 
@@ -469,12 +471,13 @@ char *findValue(char *linea){
 		if (strstr(linea, temporal) != NULL) { 
 			return actual->valor;
 		}
+
+		if (strcmp(linea, actual->nombre) == 0) { 
+			return actual->valor;
+		}
 		// ;
 		asprintf(&temporal, "%s%s", actual->nombre,";");
 		if (strstr(linea, temporal) != NULL) { 
-			return actual->valor;
-		}
-		if (strcmp(linea, actual->nombre) == 0) { 
 			return actual->valor;
 		}
 		//Salto de linea antes
