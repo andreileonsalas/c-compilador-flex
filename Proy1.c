@@ -137,15 +137,16 @@ void writeTokensToDatafile(void)
 	for(int i=1; i<=current_Hist_i; i++)
 	{
 		// Itera sobre cada token del 0-9 (Solo ignora el token de ERROR)
-		for(int a=0; a<=TOTALTOKENS-2; a++)
+		for(int a=0; a<=TOTALTOKENS-1; a++)
 		{
 			// Agrega sobre el primer índice del histograma la cantidad de apariciones que haya en los otros índices (ej. líneas 0-50, 50-100...).
 			histogram[0].token_count[a]+=histogram[i].token_count[a];
 		}
 	}
-	for(int f=0; f<TOTALTOKENS-2; f++) {
+	for(int f=0; f<TOTALTOKENS-1; f++) {
 		fprintf(file, "%s, %d\n",tokens[f], histogram[0].token_count[f]);
 	}
+	fprintf(file,"z,0");
 	fclose(file);
 }
 
