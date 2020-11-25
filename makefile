@@ -13,3 +13,4 @@ preprocesador: preprocesador.c
 clean:
 	rm lex.yy.c
 	rm scanner
+	rm preprocesador
